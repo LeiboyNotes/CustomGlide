@@ -34,6 +34,22 @@ public class Value {
 
     private String key;
 
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public void setCallback(ValueCallback callback) {
+        this.callback = callback;
+    }
+
+    public Bitmap getmBitmap() {
+        return mBitmap;
+    }
+
+    public void setmBitmap(Bitmap mBitmap) {
+        this.mBitmap = mBitmap;
+    }
+
     /**
      * 使用就加1
      */

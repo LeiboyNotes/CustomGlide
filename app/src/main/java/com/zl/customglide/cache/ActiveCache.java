@@ -1,6 +1,8 @@
 package com.zl.customglide.cache;
 
+import com.zl.customglide.Tool;
 import com.zl.customglide.resource.Value;
+import com.zl.customglide.resource.ValueCallback;
 
 import java.lang.ref.Reference;
 import java.lang.ref.ReferenceQueue;
@@ -17,6 +19,11 @@ public class ActiveCache {
     private boolean isCloseThread;
     private Thread thread;
     private boolean isHandRemove;
+    private ValueCallback valueCallback;
+
+    public ActiveCache(ValueCallback valueCallback) {
+        this.valueCallback = valueCallback;
+    }
 
     /**
      * 添加活动缓存
@@ -24,6 +31,9 @@ public class ActiveCache {
      * @param value
      */
     public void put(String key, Value value) {
+        Tool.checkNotEmpty(key);
+        //绑定value监听
+        value.setCallback(valueCallback);
         //存储
         map.put(key, new CustomWeakreference(value, null, key));
     }
@@ -57,7 +67,7 @@ public class ActiveCache {
      */
     public void closeThread(){
         isCloseThread = true;
-        if (null != thread) {
+       /* if (null != thread) {
             thread.interrupt();//中断线程
             try {
                 thread.join(TimeUnit.SECONDS.toMillis(5));
@@ -67,7 +77,9 @@ public class ActiveCache {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-        }
+        }*/
+       map.clear();
+       System.gc();
     }
 
     //监听弱引用  成为其子类
@@ -93,13 +105,16 @@ public class ActiveCache {
                 public void run() {
                     while (!isCloseThread) {
                         try {
-                            //queue.remove()阻塞式方法
-                            Reference<? extends Value> remove = queue.remove();//如果被回收了  就执行此方法
-                            CustomWeakreference weakreference = (CustomWeakreference) remove;
-                            //移除容器   区分手动、被动移除
-                            if (map != null && !map.isEmpty()&&!isHandRemove) {
-                                map.remove(weakreference.key);
+                            if (isHandRemove) {
+                                //queue.remove()阻塞式方法
+                                Reference<? extends Value> remove = queue.remove();//如果被回收了  就执行此方法
+                                CustomWeakreference weakreference = (CustomWeakreference) remove;
+                                //移除容器   区分手动、被动移除
+                                if (map != null && !map.isEmpty()) {
+                                    map.remove(weakreference.key);
+                                }
                             }
+
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
