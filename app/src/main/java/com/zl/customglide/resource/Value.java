@@ -59,7 +59,7 @@ public class Value {
             Log.e(TAG, "useAction: 加一 count:" + count);
             return;
         }
-
+        Log.e(TAG, "useAction: 加一 count:" + count);
         count++;
     }
 
@@ -67,10 +67,12 @@ public class Value {
      * 不使用就减一
      */
     public void nonUseAction() {
-        if (count-- <= 0 && callback != null) {
+        count--;
+        if (count <= 0 && callback != null) {
             //回调  通知  不再使用
             callback.valueNonUseListener(key, this);
         }
+        Log.d(TAG, "useAction: 减一 count:" + count);
     }
 
     /**

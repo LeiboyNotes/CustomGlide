@@ -8,7 +8,7 @@ public class Key {
 
     public Key(String key) {
         //加密
-        key =Tool.getSHA256StrJava(key);
+        this.key =Tool.getSHA256StrJava(key);
     }
 
     public String getKey() {

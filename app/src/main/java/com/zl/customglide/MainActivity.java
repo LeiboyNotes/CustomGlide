@@ -1,17 +1,17 @@
 package com.zl.customglide;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.zl.customglide.fragment.LifecycleCallback;
+import androidx.appcompat.app.AppCompatActivity;
 
-public class MainActivity extends Activity {
+public class MainActivity extends AppCompatActivity {
 
-    private final String path = "http://mmbiz.qpic.cn/mmbiz/PwIlO51l7wuFyoFwAXfqPNETWCibjNACIt6ydN7vw8LeIwT7IjyG3eeribmK4rhibecvNKiaT2qeJRIWXLuKYPiaqtQ/0";
+    //    private final String path = "http://mmbiz.qpic.cn/mmbiz/PwIlO51l7wuFyoFwAXfqPNETWCibjNACIt6ydN7vw8LeIwT7IjyG3eeribmK4rhibecvNKiaT2qeJRIWXLuKYPiaqtQ/0";
+    private final String path = "https://cn.bing.com/sa/simg/hpb/LaDigue_EN-CA1115245085_1920x1080.jpg";
 
-    private ImageView imageView1,imageView2,imageView3;
+    private ImageView imageView1, imageView2, imageView3;
 
 
     @Override
@@ -28,9 +28,10 @@ public class MainActivity extends Activity {
     }
 
     public void t2(View view) {
-        Glide.width(this).load(path).into(imageView1);
+        Glide.width(this).load(path).into(imageView2);
     }
+
     public void t3(View view) {
-        Glide.width(this).load(path).into(imageView1);
+        Glide.width(this).load(path).into(imageView3);
     }
 }
